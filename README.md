@@ -10,7 +10,7 @@ The Python code is stored in the appropriately named folder. Much of the remote 
 `run_zoom_session_attendance.py` is a wrapper for `zoom_session_attendance_runner.py` and is designed to be the actual piece
 of code that is run either in the command line or via any sort of automation. It not only runs `zoom_session_attendance_runner.py` but also allows the user to modify the parameters that the wrapped file uses when it is run.
 
-`zoom_session_attendance_runner` contains almost all of the actual "work" of querying the Zoom API, modifying the data, and writing it to the SQL Server. 
+`zoom_session_attendance_runner.py` contains almost all of the actual "work" of querying the Zoom API, modifying the data, and writing it to the SQL Server. Each entry in the data that this script imports represents a single attendee to one Zoom meeting, contain, among other fields, the an ID for the user logging in, the an ID for the meeting being logged into, and when the user both logged in and when they logged off.
 
 `_types.py` and `jwt_tokenizer` are small functional files containing either classes or functions the other files need.
 
