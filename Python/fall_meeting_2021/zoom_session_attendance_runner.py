@@ -1,11 +1,13 @@
 '''
 This file contains almost all of the actual "work" of querying the Zoom API, modifying the data, and writing it to the SQL Server
-It is run using the "run_zoom_session_attendance.py" file
+It is run using the "run_zoom_session_attendance.py" file.
+
+Each entry in the data that this script imports represents a single attendee to one Zoom meeting,
+contain, among other fields, the an ID for the user logging in, the an ID for the meeting being logged into,
+and when the user both logged in and when they logged off.
 
 Visit the readme for a link to the relevant documentation for the Zoom API
 '''
-
-
 
 # Standard packages
 import typing
@@ -14,8 +16,8 @@ import time
 
 # External Packages
 import requests
-import sqlalchemy  # type: ignore
-import pandas as pd  # type: ignore
+import sqlalchemy  
+import pandas as pd  
 import requests
 import pytz
 
@@ -126,8 +128,8 @@ def run(
 	'''
 	each query made against the Zoom API generates a return, and if the meeting you're querying about
 	had more attendees than an individual return can contain, then the return will contain as many attendees
-	as it can fit, as well as a new call you can make for the next set of attendees for the original meeting you made your 
-	query about. This code is set up to automatically call these embedded query and extract their data one after another until there aren't any left
+	as it can fit (50, as per the `page_size` parameter) as well as a new call you can make for the next set of attendees for the original meeting you made your 
+	query about. This code is set up to automatically call these embedded queries and extract their data one after another until there aren't any left
 	'''
 
 	#variables needed for the looped queries being made below
@@ -186,8 +188,7 @@ def run(
 				next_pagination = inner_data['next_page_token']
 	
 		else:
-			print("The following meetings have issues that prevent data for them from being imported. Most often, they simply haven't yet occurred.")
-			print(data['message'])
+			print(str.format("Issue encountered for the following meeting: {x}", x = data['message']))
 
 	import_df = pd.DataFrame(import_list)
 
@@ -196,7 +197,7 @@ def run(
 	'''
 	On rare occasions, when writing large Pandas dataframes to remote servers, SQLAlchemy (the module used here to write to the SQL Server) will spontaneously fail,
 	crashing the script. This generally occurs due to slight hiccups in internet connection. The code here splits the very large dataframe created above into
-	smaller dataframes segmented by the day on which the zoom meeting occurred. Each of these smaller dataframes is then written individually.
+	smaller dataframes segmented by the day on which the zoom meeting occurred. Each of these smaller dataframes is then written individually. This is MUCH more reliable
 	'''
 
 	#these lines split the df of all attendees into smaller dfs grouped by day for the sake of keeping the dfs being written a managable size
