@@ -1,7 +1,7 @@
 '''
-This file serves as a wrapper for 'zoom_session_attendance_runner' and is designed to be the actual piece
+This file serves as a wrapper for 'zoom_session_attendance_runner.py' and is designed to be the actual piece
 of code that is run either in the command line or via any sort of automation
-It not only runs 'zoom_session_attendance_runner' but also allows the user to modify the parameters that
+It not only runs 'zoom_session_attendance_runner.py' but also allows the user to modify the parameters that
 the wrapped file uses when it is run
 '''
 
@@ -18,7 +18,7 @@ class ParametersType:
     #the script will query the API and prepare DataFrames for export, but not actually write them anywhere
     dry_run: bool = True
 
-    #if this variable is True, code will be run that will delete all the data in the target SQL before any new data is written to it
+    #if this variable is True, code will be run that will delete all the data in the target SQL table before any new data is written to it
     #In order to maintain idempotency, this should always be True for any actual runs
     delete_data: bool = False
     
