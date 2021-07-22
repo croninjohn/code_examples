@@ -1,6 +1,6 @@
 # John Cronin Code Samples
 
-These files are code I wrote for my previous position as a Data Engineer at the ACS, creating Tableau dashboards displays the usage and engagement data for the ACS's frequent national conferences.
+These files are code I wrote for my previous position as a Data Engineer at the ACS, creating Tableau dashboards displaying usage and engagement data for the ACS's frequent national conferences.
 
 This repo contains examples of both my Python and my SQL code. Normally they would be be stored together this way, but for the sake of convenience they are. Together these sets of code represent just a few of the dozen or more scripts or so that I would write (across both SQL and Python) for a single conference. 
 
