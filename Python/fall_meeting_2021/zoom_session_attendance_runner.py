@@ -1,6 +1,8 @@
 '''
 This file contains almost all of the actual "work" of querying the Zoom API, modifying the data, and writing it to the SQL Server
 It is run using the "run_zoom_session_attendance.py" file
+
+Visit the readme for a link to the relevant documentation for the Zoom API
 '''
 
 
@@ -18,7 +20,7 @@ import requests
 import pytz
 
 # Local Packages
-import sds_secure
+import sds_secure #contains secure info not safe for git
 from fall_meeting_2021.librum import jwt_tokenizer,_types
 
 #converts each participant in the API return into a dict that can be feed into a pandas dataframe (as part of a list of dicts)
@@ -61,7 +63,7 @@ def participant_converter(parameters, meeting_id, series, participant):
 
 	return participant_dict
 
-
+#main function that is run by run_zoom_session_attendance.py
 def run(
 	parameters: _types.ParametersType
 	):
@@ -110,7 +112,7 @@ def run(
 
 	#Access creds
 	#These obviously are not stored on git
-	#Suffice it to say this pull the api key and api secret from a secure package that all Data Team members share
+	#Suffice it to say this pull the api key and api secret from a secure local package
 	api_key: str = sds_secure.passwords["Zoom"]["production"]["api_key"]
 	api_secret: str = sds_secure.passwords["Zoom"]["production"]["api_secret"]
 
@@ -139,10 +141,12 @@ def run(
 		#each meeting id can't be passed as a param to the query; it's embedded in the endpoint url
 		url = str.format(parameters.url, meeting_id = meeting_id)
 		
+		#this line is where the actual call to the Zoom API is made. "response" stores what is returned
 		response = requests.get(url = url, params = params, headers = headers)
 
 		time.sleep(.25) #included to prevent the script from hitting the API's built-in query limit
 
+		#extracts the contents of the response as an easily parsed set of lists and dicts embedded within each other
 		data = response.json()
 		'''
 		 "code" only appears in as a key in the return dict if the query was a failure.
@@ -192,7 +196,7 @@ def run(
 	'''
 	On rare occasions, when writing large Pandas dataframes to remote servers, SQLAlchemy (the module used here to write to the SQL Server) will spontaneously fail,
 	crashing the script. This generally occurs due to slight hiccups in internet connection. The code here splits the very large dataframe created above into
-	smaller dataframes segmented by the day on which the zoom meeting visit occured. Each of these smaller dataframes is then written individually.
+	smaller dataframes segmented by the day on which the zoom meeting occurred. Each of these smaller dataframes is then written individually.
 	'''
 
 	#these lines split the df of all attendees into smaller dfs grouped by day for the sake of keeping the dfs being written a managable size
