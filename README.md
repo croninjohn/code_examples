@@ -1,4 +1,4 @@
-# code_examples
+# John Cronin Code Samples
 
 These files are code I wrote for my previous position as a Data Engineer at the ACS, creating Tableau dashboards displays the usage and engagement data for the ACS's frequent national conferences.
 
