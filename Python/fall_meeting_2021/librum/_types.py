@@ -17,15 +17,15 @@ to 'zoom_session_attendance_runner.py' where it is used to control how that scri
 '''
 class ParametersType:
 
-    # dry_run: if True, do not write values, simply report results
-    #   This is useful for testing the connections, without changing data
+    #if True, do not write values, simply report results
+    #This is useful for testing the connections, without changing data
     dry_run: bool = True
 
-    # delete_data: if True, will delete all data in a an output/'write' table
-    #   before inserting into it
+    #if True, will delete all data in a an output/'write' table
+    #before inserting into it
     delete_data: bool = False
 
-    #    Read Target
+    #Read Target
     read_category: str
     read_environment: str
     read_server: str
@@ -36,7 +36,7 @@ class ParametersType:
     read_sql_kind: str
     read_password: typing.Optional[str]
 
-    #       Write Target
+    #Write Target
     write_category: str
     write_environment: str
     write_server: str
@@ -46,8 +46,6 @@ class ParametersType:
     write_sql_connector: str
     write_sql_kind: str
     write_password: typing.Optional[str]
-
-    #Analytics dashboard specific variables
 
     #SQL and schema to which data will be written
     schema_name: str
