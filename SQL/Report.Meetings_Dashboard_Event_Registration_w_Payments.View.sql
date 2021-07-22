@@ -51,16 +51,16 @@ AS
 		,[payments].[Total_Revenue] AS [Total_Revenue]
 		,[payments].[Total_Revenue] AS [Registrant_Total_Paid]
 	FROM
-		[CDS].[Registrant] --The primary table that this view draws on; contains each one record for each registrant but limited other information
-		INNER JOIN [CDS].[Event] --Contains supplementary information about different conferences being held; used to flesh out the info found in CDS.Registrants
+		[CDS].[Registrant] --The primary table that this view draws on; contains one record for each registrant but limited other information
+		INNER JOIN [CDS].[Event] --Contains supplementary information about different conferences being held; used to flesh out the info found in CDS.Registrant
 			ON [Registrant].[ID_Event] = [Event].[ID_Event]
-		LEFT JOIN [Report].[CDS_Event_Extended] --This is a small static table containing, where available, registration and revenue targets for different conferences
+		LEFT JOIN [Report].[CDS_Event_Extended] --This is a small static table containing, when available, registration and revenue targets for different conferences
 			ON [Event].[Event_Code] = [CDS_Event_Extended].[Event_Code]
 
 		/*
 		This code section connects CDS.Registrants to CDS.Demo, a table containing registrant's responses
-		during registration to several supplementary questions. In doing so, the script isolates only the questions
-		that asked if this was a registrant's first ACS conference, and matched those back to the registrants in CDS.Registrant, 
+		during registration to several supplementary questions. In doing so, the script isolates only the entries for questions
+		that asked if this was a registrant's first ACS conference, and matched the question's answer back to the relevant registrants in CDS.Registrant, 
 		ignoring duplicates in CDS.Demo along the way.
 		*/
 		LEFT JOIN (
@@ -92,7 +92,7 @@ AS
 		/*
 		This section links, as best as possible, every registrant in CDS.Registrant back to an entry in NetFORUM.Constituent,
 		the ACS's central table for details about individual ACS members. It does this to attempt to match each Registrant back to a description
-		of the industry they work in from their member profile.
+		of the industry they work in that would be stored in their member profile.
 		*/
 		LEFT JOIN (
 			SELECT
