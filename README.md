@@ -14,15 +14,6 @@ of code that is run either in the command line or via any sort of automation. It
 
 `_types.py` and `jwt_tokenizer` are small functional files containing either classes or functions the other files need.
 
-*The dashboard pictured below, created by me, was supported by Python code identical to what I have provided here.*\*
-![Conference_Engagement_Summary](https://github.com/croninjohn/code_examples/blob/master/Dashboards/Conference_Engagement_Summary.png?raw=true)
-
 **SQL**   
 The SQL code can also be found in the accordingly named folder. It contains a single SQL (`Report.Meetings_Dashboard_Event_Registration_w_Payments.View`) file that creates a SQL view used by a Tableau dashboard designed to show executive leadership the state of visitor registrations for upcoming conferences. It draws on various source tables to create a unified view containing an entry for each conference registrant. It was not the only piece of SQL code used to support the aforementioned dashboard, but it demonstrates succinctly the proficiency with SQL I want to communicate.
 
-*This dashboard, also created by me, is the one that draws on the SQL code I've provided*
-![Conference_Registrations_Summary](https://github.com/croninjohn/code_examples/blob/master/Dashboards/Conference_Registrations_Summary.png?raw=true)
-
-
-
-\* *Digitell* as it appears in this dashboard refers to the virtual platform host for the conferences; some conference meetings were hosted in Zoom, while others used Digitell's built-in meeting system.
