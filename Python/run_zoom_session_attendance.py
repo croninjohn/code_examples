@@ -25,13 +25,13 @@ class ParametersType:
 
 
     #Read Sql Engine Params (required by SQLAlchemy to generate a connection to the SQL Server)
-    read_category: str = 'datastore'
-    read_environment: str = 'development'
-    read_server: str = 'dev-ws-105'
+    read_category: str = 'category'
+    read_environment: str = 'environment'
+    read_server: str = 'server'
     read_port: typing.Optional[str] = None
-    read_user: str = 'SDS_Deploy'
-    read_database: str = 'Society_ODS_Prep'
-    read_sql_kind: str = 'sqlserver-pyodbc'
+    read_user: str = 'user'
+    read_database: str = 'database'
+    read_sql_kind: str = 'sql_kind
 
     read_sql_query: str = str.format(
         ('SELECT * FROM {schema_name}.{table_name}'),
@@ -40,13 +40,13 @@ class ParametersType:
         )
 
     #Write Sql Engine Params (required by SQLAlchemy to generate a connection to the SQL Server)
-    write_category: str = 'datastore'
+    write_category: str = 'category'
     write_environment: str = 'development'
-    write_server: str = 'dev-ws-105'
+    write_server: str = 'server'
     write_port: typing.Optional[str] = None
-    write_user: str = 'SDS_Deploy'
-    write_database: str = 'Society_ODS_Prep'
-    write_sql_kind: str = 'sqlserver-pyodbc'
+    write_user: str = 'user'
+    write_database: str = 'database'
+    write_sql_kind: str = 'sql_kind'
 
     #Schema and Table for SQL Table to be written to
     schema_name: str = 'FM_2021_Zoom'

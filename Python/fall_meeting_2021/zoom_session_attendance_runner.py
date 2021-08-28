@@ -22,7 +22,7 @@ import requests
 import pytz
 
 # Local Packages
-import sds_secure #contains secure info not safe for git
+import secure_package
 from fall_meeting_2021.librum import jwt_tokenizer,_types
 
 #converts each participant in the API return into a dict that can be feed into a pandas dataframe (as part of a list of dicts)
@@ -73,7 +73,7 @@ def run(
 	start = datetime.datetime.now().strftime("%H:%M:%S")
 
 	#create sql engine for the read server
-	read_sql_engine: sqlalchemy.engine.base.Engine = sds_secure.create_engine(
+	read_sql_engine: sqlalchemy.engine.base.Engine = secure_package.create_engine(
 	    category = parameters.read_category,
 	    environment = parameters.read_environment, 
 	    server = parameters.read_server,
@@ -84,7 +84,7 @@ def run(
 	)
 
 	#create sql engine for the write server
-	write_sql_engine: sqlalchemy.engine.base.Engine = sds_secure.create_engine(
+	write_sql_engine: sqlalchemy.engine.base.Engine = secure_package.create_engine(
 	    category = parameters.write_category,
 	    environment = parameters.write_environment, 
 	    server = parameters.write_server,
@@ -115,8 +115,8 @@ def run(
 	#Access creds
 	#These obviously are not stored on git
 	#Suffice it to say this pull the api key and api secret from a secure local package
-	api_key: str = sds_secure.passwords["Zoom"]["production"]["api_key"]
-	api_secret: str = sds_secure.passwords["Zoom"]["production"]["api_secret"]
+	api_key: str = secure_package.passwords["Zoom"]["production"]["api_key"]
+	api_secret: str = secure_package.passwords["Zoom"]["production"]["api_secret"]
 
 	#Creates the credential token used to access the API
 	headers = jwt_tokenizer.generate_token(api_key, api_secret)
