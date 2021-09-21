@@ -2,6 +2,8 @@
 
 These files are code I wrote for my previous position as a Data Engineer, creating Tableau dashboards displaying usage and engagement data for the frequent national conferences of a large professional society for scientists.
 
+I can provide images of the dashboards I produced upon request.
+
 This repo contains code samples in both Python and SQL. Together these sets of code represent just a few of the dozen or more scripts or so that I would write (across both SQL and Python) for a single conference. 
 
 **PYTHON**  
