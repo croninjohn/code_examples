@@ -2,9 +2,9 @@
 
 These files are code I wrote for my previous position as a Data Engineer, creating Tableau dashboards displaying usage and engagement data for the frequent national conferences of a large professional society for scientists.
 
-I can provide images of the dashboards I produced upon request.
-
 This repo contains code samples in both Python and SQL. Together these sets of code represent just a few of the dozen or more scripts or so that I would write (across both SQL and Python) for a single conference. 
+
+I can provide images of the dashboards these code pieces support upon request.
 
 **PYTHON**  
 The Python code is stored in the appropriately named folder. Much of the remote portions of all of the conferences were hosted in Zoom, and the Python scripts here were designed to extract data on attendance for those meetings (who attended what meetings when) from Zoom's API, then clean, relabel, and tweak that data before exporting it to a table in a collection of SQL Servers. I would then use Tableau to draw from that table to help create dashboards allowing conference stakeholders to monitor how attendees were interacting with the different sessions available to them at a given  conference. I chose these files not only because they deal with data from a well-known company (Zoom) but they represent a siloed and easy-to-follow portion of one of the data pipelines that I would design and manage.
