@@ -35,7 +35,7 @@ def participant_converter(parameters, meeting_id, series, participant):
 
 	'''
 	This code is a little convoluted, but was the only way I could manage to integrate dynamic timezone adjustments
-	given the restrictions of different python/pandas/numpy datetime data types AND the pecularities of SQLAlchemy (ACS Data Team's preferred SQl-Python module)
+	given the restrictions of different python/pandas/numpy datetime data types AND the pecularities of SQLAlchemy (the team's preferred SQL-Python module)
 	
 	Essentially, the pandas datatime data type called Timestamp IS timezone aware, but CANNOT be read into SQL with SQL Alchemy
 	The numpy datetime data type called Datetime64 IS NOT timezone aware, but CAN be read into SQL with SQL Alchemy
@@ -101,8 +101,8 @@ def run(
 	#reads in Zoom Meeting Details
 
 	'''
-	Zoom Meeting Details is a crosswalk table on the ACS's servers that links each meeting's Zoom Meeting Id 
-	(which is used to query for each meeting against the Zoom API) to the ACS's internal id number for the session (session_id)
+	Zoom Meeting Details is a crosswalk table on the relevant SQL server that links each meeting's Zoom Meeting Id 
+	(which is used to query for each meeting against the Zoom API) to the organization's internal id number for the session (session_id)
 	which is then used by a SQL view not included here to join this data imported from Zoom with pertinent session details
 	'''
 
@@ -114,7 +114,7 @@ def run(
 
 	#Access creds
 	#These obviously are not stored on git
-	#Suffice it to say this pull the api key and api secret from a secure local package
+	#this pulls the api key and api secret from a secure local package
 	api_key: str = secure_package.passwords["Zoom"]["production"]["api_key"]
 	api_secret: str = secure_package.passwords["Zoom"]["production"]["api_secret"]
 
