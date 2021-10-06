@@ -1,4 +1,4 @@
-# John Cronin Code Samples
+# John Cronin Data Engineering Overview
 
 These files are code I wrote for my previous position as a Data Engineer, creating Tableau dashboards displaying usage and engagement data for the frequent national conferences of a large professional society for scientists.
 
