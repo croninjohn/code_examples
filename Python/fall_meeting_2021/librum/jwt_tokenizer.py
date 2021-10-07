@@ -1,5 +1,4 @@
 #this script generates a JSON Web Token (JWT) that is then packaged with our API calls to the Zoom API
-#further information on what a JWT is can be found at the link in the README
 
 #this function returns a complete header to be included in a standard API call made with the requests package
 
