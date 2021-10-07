@@ -1,6 +1,5 @@
-﻿/*
-This script draws on a number of different tables the organization I worked for uses to store data it receives from partnered vendors (mostly CDS,
-the vendor which the organization relies on for registration services) to create a single view that captures as much information
+/*
+This script draws on a number of different tables the organization I worked for uses to store data it receives from partnered vendors (mostly Registration Vendor, a placeholder name for the vendor which the organization relies on for registration services) to create a single view that captures as much information
 about every registrant to the conferences that the organization hosts.
 
 See the README for the Tableau dashboard that the view that this script creates supports.
@@ -20,6 +19,7 @@ GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 CREATE OR ALTER VIEW [Report].[Meetings_Dashboard_Event_Registration_w_Payments]
 AS
 	SELECT 
@@ -39,29 +39,29 @@ AS
 		,[Registrant].[First_Name]
 		,[Registrant].[RegClass_Code]
 		,[Registrant].[ExtraInfo40] AS [Abstract_Accepted]
-		,[Metadata].to_proper_case([Registrant].RegClass_Long_Name) AS RegClass_Long_Name
+		,[Metadata].to_proper_case([Registrant].RegClass_Long_Name) AS RegClass_Long_Name -- calls simple function to clean up some messy strings
 		,[Registrant].[Registration_DateTime]
 		,[Registrant].[State_Province]
 		,[Registrant].[Country]
 		,[firstmtg].[Answer_Text] AS [First_Meeting]
 		,[cst].[Industry_Description]
 		,[cnv].[Conversion_Flag]
-		,[CDS_Event_Extended].[Registration_Target]
-		,[CDS_Event_Extended].[Revenue_Target]
+		,[Registration_Vendor_Event_Extended].[Registration_Target]
+		,[Registration_Vendor_Event_Extended].[Revenue_Target]
 		,[payments].[Total_Revenue] AS [Total_Revenue]
 		,[payments].[Total_Revenue] AS [Registrant_Total_Paid]
 	FROM
-		[CDS].[Registrant] --The primary table that this view draws on; contains one record for each registrant but limited other information
-		INNER JOIN [CDS].[Event] --Contains supplementary information about different conferences being held; used to flesh out the info found in CDS.Registrant
+		[Registration_Vendor_Schema].[Registrant] --The primary table that this view draws on; contains one record for each registrant but limited other information
+		INNER JOIN [Registration_Vendor_Schema].[Event] --Contains supplementary information about different conferences being held; used to flesh out the info found in Registration_Vendor_Schema.Registrant
 			ON [Registrant].[ID_Event] = [Event].[ID_Event]
-		LEFT JOIN [Report].[CDS_Event_Extended] --This is a small static table containing, when available, registration and revenue targets for different conferences
-			ON [Event].[Event_Code] = [CDS_Event_Extended].[Event_Code]
+		LEFT JOIN [Report].[Registration_Vendor_Event_Extended] --This is a small static table containing, when available, registration and revenue targets for different conferences
+			ON [Event].[Event_Code] = [Registration_Vendor_Event_Extended].[Event_Code]
 
 		/*
-		This code section connects CDS.Registrants to CDS.Demo, a table containing registrant's responses
+		This code section connects Registration_Vendor.Registrants to Registration_Vendor.Demo, a table containing registrant's responses
 		during registration to several supplementary questions. In doing so, the script isolates only the entries for questions
-		that asked if this was a registrant's first conference, and matched the question's answer back to the relevant registrants in CDS.Registrant, 
-		ignoring duplicates in CDS.Demo along the way.
+		that asked if this was a registrant's first conference, and matched the question's answer back to the relevant registrants in Registration_Vendor.Registrant, 
+		ignoring duplicates in Registration_Vendor.Demo along the way.
 		*/
 		LEFT JOIN (
 			SELECT
@@ -78,7 +78,7 @@ AS
                     ORDER BY [Record_Status_Date] DESC
                 ) AS ROW_NUM
 			FROM
-				[CDS].[Demo]
+				[Registration_Vendor_Schema].[Demo]
 			WHERE 
 				[Question_Text] IN (
                     '* Is this your first Meeting?'
@@ -90,7 +90,7 @@ AS
 			AND [firstmtg].[ROW_NUM] = 1
 
 		/*
-		This section links, as best as possible, every registrant in CDS.Registrant back to an entry in NetFORUM.Constituent,
+		This section links, as best as possible, every registrant in Registration_Vendor_Schema.Registrant back to an entry in Membership_Schema.Constituent,
 		the organizations's central table for details about individual members. It does this to attempt to match each Registrant back to a description
 		of the industry they work in that would be stored in their member profile.
 		*/
@@ -106,7 +106,7 @@ AS
                     ORDER BY [Modified_DateTime] DESC
                 ) AS [ROW_NUM]
 			FROM
-				[CDS].[Registrant]
+				[Registration_Vendor_Schema].[Registrant]
 				INNER JOIN [SDS].[Constituent]
 				    ON [Registrant].[Constituent_ID] = [Constituent].[Constituent_ID] 
 		) AS [cst]
@@ -115,7 +115,7 @@ AS
 			AND [cst].[ROW_NUM] = 1
 
 		/*
-		This section links each registrant in CDS.Registrant back to any memberships they purchased while
+		This section links each registrant in Registration_Vendor.Registrant back to any memberships they purchased while
 		registering. Without noting the details of that new membership, it merely records whether or not they purchased a membership
 		*/
 		LEFT JOIN (
@@ -127,19 +127,19 @@ AS
 				[Registrant].[Badge],
 				1 AS [Conversion_Flag]
 			FROM 
-				[CDS].[Event_Item]
-				INNER JOIN [CDS].[Registrant]
+				[Registration_Vendor_Schema].[Event_Item]
+				INNER JOIN [Registration_Vendor_Schema].[Registrant]
 					ON [Event_Item].[ID_Registrant] = [Registrant].[ID_Registrant]
-				INNER JOIN [CDS].[Event]
+				INNER JOIN [Registration_Vendor_Schema].[Event]
 					ON [Event_Item].[ID_Event] = [Event].[ID_Event]
 			WHERE 
-				[Item_Code] IN ('DAFE', 'DRME', 'DRMSTE', 'DSMUGE') --These item codes indicate an item was a new ACS membership
+				[Item_Code] IN ('DAFE', 'DRME', 'DRMSTE', 'DSMUGE') --These item codes indicate an item was a new organization membership
 		) AS cnv
 			ON [Registrant].[ID_Event] = [cnv].[ID_Event] 
 			AND [Registrant].[ID_Registrant] = [cnv].[ID_Registrant]
 
 		/*
-		This section links each registrant in CDS.Registrant back to any purchases that were associated with their registration,
+		This section links each registrant in Registration_Vendor_Schema.Registrant back to any purchases that were associated with their registration,
 		sums the total value of those purchases, and thereby calculates for each registrant the total revenue that they generated
 		*/
 		LEFT JOIN (
