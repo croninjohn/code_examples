@@ -1,7 +1,7 @@
 ﻿/*
-This script draws on a number of different tables the ACS uses to store data it receives from partnered vendors (mostly CDS,
-the vendor which the ACS relies on for registration services) to create a single view that captures as much information
-about every registrant to the conferences that the ACS hosts.
+This script draws on a number of different tables the organization I worked for uses to store data it receives from partnered vendors (mostly CDS,
+the vendor which the organization relies on for registration services) to create a single view that captures as much information
+about every registrant to the conferences that the organization hosts.
 
 See the README for the Tableau dashboard that the view that this script creates supports.
 The different data sources and the overall function of the code is described inline.
@@ -60,7 +60,7 @@ AS
 		/*
 		This code section connects CDS.Registrants to CDS.Demo, a table containing registrant's responses
 		during registration to several supplementary questions. In doing so, the script isolates only the entries for questions
-		that asked if this was a registrant's first ACS conference, and matched the question's answer back to the relevant registrants in CDS.Registrant, 
+		that asked if this was a registrant's first conference, and matched the question's answer back to the relevant registrants in CDS.Registrant, 
 		ignoring duplicates in CDS.Demo along the way.
 		*/
 		LEFT JOIN (
@@ -81,8 +81,8 @@ AS
 				[CDS].[Demo]
 			WHERE 
 				[Question_Text] IN (
-                    '* Is this your first ACS Meeting?'
-                    ,'Is this your first ACS Meeting?'
+                    '* Is this your first Meeting?'
+                    ,'Is this your first Meeting?'
                 )
 		) AS [firstmtg]
 			ON [Registrant].[ID_Event] = [firstmtg].[ID_Event] 
@@ -91,7 +91,7 @@ AS
 
 		/*
 		This section links, as best as possible, every registrant in CDS.Registrant back to an entry in NetFORUM.Constituent,
-		the ACS's central table for details about individual ACS members. It does this to attempt to match each Registrant back to a description
+		the organizations's central table for details about individual members. It does this to attempt to match each Registrant back to a description
 		of the industry they work in that would be stored in their member profile.
 		*/
 		LEFT JOIN (
@@ -115,7 +115,7 @@ AS
 			AND [cst].[ROW_NUM] = 1
 
 		/*
-		This section links each registrant in CDS.Registrant back to any ACS Memberships they purchased while
+		This section links each registrant in CDS.Registrant back to any memberships they purchased while
 		registering. Without noting the details of that new membership, it merely records whether or not they purchased a membership
 		*/
 		LEFT JOIN (
