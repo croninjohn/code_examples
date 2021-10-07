@@ -6,7 +6,6 @@ Each entry in the data that this script imports represents a single attendee to 
 contain, among other fields, the an ID for the user logging in, the an ID for the meeting being logged into,
 and when the user both logged in and when they logged off.
 
-Visit the readme for a link to the relevant documentation for the Zoom API
 '''
 
 # Standard packages
