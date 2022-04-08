@@ -1,8 +1,6 @@
 /*
 This script draws on a number of different tables the organization I worked for uses to store data it receives from partnered vendors to create a single view that captures as much information
 about every registrant to the conferences that the organization hosts.
-
-See the README for the Tableau dashboard that the view that this script creates supports.
 The different data sources and the overall function of the code is described inline.
 */
 
