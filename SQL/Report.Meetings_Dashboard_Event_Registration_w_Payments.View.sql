@@ -1,14 +1,13 @@
 /*
-This script draws on a number of different tables the organization I worked for uses to store data it receives from partnered vendors (mostly Registration Vendor, a placeholder name for the vendor which the organization relies on for registration services) to create a single view that captures as much information
+This script draws on a number of different tables the organization I worked for uses to store data it receives from partnered vendors to create a single view that captures as much information
 about every registrant to the conferences that the organization hosts.
 
 See the README for the Tableau dashboard that the view that this script creates supports.
 The different data sources and the overall function of the code is described inline.
-
 */
 
 
-USE [Society_ODS]
+USE [ODS]
 GO
 
 DROP VIEW IF EXISTS [Report].[Meetings_Dashboard_Event_Registration_w_Payments]
