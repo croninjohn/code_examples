@@ -33,15 +33,11 @@ def participant_converter(parameters, meeting_id, series, participant):
 	participant_dict['session_id'] = series['Meeting_Id']
 
 	'''
-	This code is a little convoluted, but was the only way I could manage to integrate dynamic timezone adjustments
-	given the restrictions of different python/pandas/numpy datetime data types AND the pecularities of SQLAlchemy (the team's preferred SQL-Python module)
-	
-	Essentially, the pandas datatime data type called Timestamp IS timezone aware, but CANNOT be read into SQL with SQL Alchemy
-	The numpy datetime data type called Datetime64 IS NOT timezone aware, but CAN be read into SQL with SQL Alchemy
-
 	Datetimes are given as strings in the API call returns; each of these lines converts such a string into a Pandas Timestamp,
 	assigns it the source timezone zone given in the parameters, converts it from that timezone to the target timezone in parameters,
-	then converts the object to a Numpy datetime64 object, which is timezone naive but preserves the adjustment that has already been made
+	then converts the object to a Numpy datetime64 object, which is timezone naive but preserves the adjustment that has already been made.
+	Converting the datetime to a datetime64 object is necessary for it to be read into SQL properly by SQLAlchemy, which sometimes failed
+	to do so with Pandas Timestamps.
 	'''
 
 	participant_dict['entrance_time'] = pd.Timestamp(participant['join_time'], tz = pytz.timezone(parameters.source_tz)).tz_convert(pytz.timezone(parameters.target_tz)).tz_localize(tz = None).to_datetime64() 
@@ -112,7 +108,7 @@ def run(
 	session_details_df = pd.io.sql.read_sql(parameters.read_sql_query, con=read_connection)
 
 	#Access creds
-	#These obviously are not stored on git
+	#These obviously are not stored on github
 	#this pulls the api key and api secret from a secure local package
 	api_key: str = secure_package.passwords["Zoom"]["production"]["api_key"]
 	api_secret: str = secure_package.passwords["Zoom"]["production"]["api_secret"]
@@ -192,12 +188,6 @@ def run(
 	import_df = pd.DataFrame(import_list)
 
 	print("Import complete; misc. fields dropped.")
-
-	'''
-	On rare occasions, when writing large Pandas dataframes to remote servers, SQLAlchemy (the module used here to write to the SQL Server) will spontaneously fail,
-	crashing the script. This generally occurs due to slight hiccups in internet connection. The code here splits the very large dataframe created above into
-	smaller dataframes segmented by the day on which the zoom meeting occurred. Each of these smaller dataframes is then written individually. This is MUCH more reliable
-	'''
 
 	#these lines split the df of all attendees into smaller dfs grouped by day for the sake of keeping the dfs being written a managable size
 	grouped = import_df.groupby('entrance_date')
