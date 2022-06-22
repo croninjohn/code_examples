@@ -1,5 +1,12 @@
 # John Cronin Data Engineering Overview
 
+**NOTE:**
+*While you're welcome to peruse this repo and I'm proud of the work inside, please consider checking out [this repo](https://github.com/croninjohn/games_savings_etl) first; the ETL project it contains is better documented, uses  modern cloud DE tools, and supports an active, public [dashboard](http://18.212.173.53:3000/public/dashboard/cda4da01-2386-433a-b4ce-c3ae2ec5ee75). If I sent you the link to this repo specifically, that was an accident on my part – check out my whole profile!* 
+
+
+
+
+
 These files are code that closely approximates some scripts I wrote for a previous position of mine as a Data Engineer, creating data pipelines supporting analytics dashboards for the frequent virtual academic conferences of a large professional society for scientists.
 
 This repo contains code samples in both Python and SQL. Together these sets of code represent just a few of the dozen or more scripts or so that I would write (across both SQL and Python) for a single conference. 
